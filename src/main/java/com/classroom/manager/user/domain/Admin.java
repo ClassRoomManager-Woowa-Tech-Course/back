@@ -1,6 +1,8 @@
 package com.classroom.manager.user.domain;
 
 import com.classroom.manager.user.domain.dto.RegisterAdminRequest;
+import com.classroom.manager.user.domain.exception.AdminLoginFailedException;
+import com.classroom.manager.user.infra.security.dto.TokenPayLoad;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -41,6 +43,16 @@ public class Admin {
                 .authorization(registerAdminRequest.authorization())
                 .active(Active.ACTIVE)
                 .build();
+    }
+
+    public TokenPayLoad login(String rawPassword, PasswordEncoder passwordEncoder) {
+        if (!passwordEncoder.matches(rawPassword, this.password)) {
+            throw new AdminLoginFailedException();
+        }
+        if (this.active != Active.ACTIVE) {
+            throw new AdminLoginFailedException("비활성화된 계정입니다.");
+        }
+        return new TokenPayLoad(adminId, authorization);
     }
 
     public void inactive() {
