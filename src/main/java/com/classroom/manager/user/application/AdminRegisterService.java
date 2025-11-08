@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AdminRegisterService {
@@ -27,6 +29,18 @@ public class AdminRegisterService {
     public void delete(RegisterAdminRequest registerAdminRequest) {
         if (adminRepository.existsById(registerAdminRequest.adminId())) {
             adminRepository.deleteById(registerAdminRequest.adminId());
+            return;
+        }
+        throw new AdminNotFoundException(registerAdminRequest.adminId());
+    }
+
+    public void suspend(RegisterAdminRequest registerAdminRequest) {
+        if (adminRepository.existsById(registerAdminRequest.adminId())) {
+            Optional<Admin> admin = adminRepository.findById(registerAdminRequest.adminId());
+            admin.ifPresent(a -> {
+                a.inactive();
+                adminRepository.save(a);
+            });
             return;
         }
         throw new AdminNotFoundException(registerAdminRequest.adminId());

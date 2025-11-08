@@ -43,6 +43,10 @@ public class Admin {
                 .build();
     }
 
+    public void inactive() {
+        this.active = Active.INACTIVE;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
