@@ -5,6 +5,7 @@ import com.classroom.manager.user.domain.dto.RegisterAdminRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,6 +19,12 @@ public class AdminController {
     @PostMapping
     public ResponseEntity<Void> registerAdmin(RegisterAdminRequest registerAdminRequest) {
         adminRegisterService.register(registerAdminRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAdmin(RegisterAdminRequest registerAdminRequest) {
+        adminRegisterService.delete(registerAdminRequest);
         return ResponseEntity.ok().build();
     }
 }
