@@ -1,6 +1,7 @@
 package com.classroom.manager.user.application;
 
 import com.classroom.manager.user.application.exception.AdminAlreadyExistException;
+import com.classroom.manager.user.application.exception.AdminNotFoundException;
 import com.classroom.manager.user.domain.Admin;
 import com.classroom.manager.user.domain.dto.RegisterAdminRequest;
 import com.classroom.manager.user.domain.repository.AdminRepository;
@@ -21,5 +22,13 @@ public class AdminRegisterService {
         }
         Admin admin = Admin.from(registerAdminRequest, passwordEncoder);
         adminRepository.save(admin);
+    }
+
+    public void delete(RegisterAdminRequest registerAdminRequest) {
+        if (adminRepository.existsById(registerAdminRequest.adminId())) {
+            adminRepository.deleteById(registerAdminRequest.adminId());
+            return;
+        }
+        throw new AdminNotFoundException(registerAdminRequest.adminId());
     }
 }
