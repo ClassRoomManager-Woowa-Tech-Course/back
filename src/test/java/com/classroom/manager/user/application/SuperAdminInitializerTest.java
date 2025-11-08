@@ -44,7 +44,7 @@ class SuperAdminInitializerTest {
         ReflectionTestUtils.setField(superAdminInitializer, "adminContact", TEST_CONTACT);
     }
 
-    @DisplayName("관리자가 없을 때, 고정된 전체 관리자 계정을 생성한다 (데이터 시딩)")
+    @DisplayName("관리자가 없을 때, 고정된 전체 관리자 계정을 생성한다 (데이터 샤딩)")
     @Test
     void registerSuperAdmin_whenNotExists() throws Exception {
         when(adminRepository.findById(TEST_ID)).thenReturn(Optional.empty());
