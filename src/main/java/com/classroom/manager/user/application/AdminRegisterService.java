@@ -3,7 +3,7 @@ package com.classroom.manager.user.application;
 import com.classroom.manager.user.application.exception.AdminAlreadyExistException;
 import com.classroom.manager.user.application.exception.AdminNotFoundException;
 import com.classroom.manager.user.domain.Admin;
-import com.classroom.manager.user.domain.dto.RegisterAdminRequest;
+import com.classroom.manager.user.application.dto.RegisterAdminRequest;
 import com.classroom.manager.user.domain.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

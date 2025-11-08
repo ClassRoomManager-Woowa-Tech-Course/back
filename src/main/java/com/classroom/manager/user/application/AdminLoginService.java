@@ -2,7 +2,7 @@ package com.classroom.manager.user.application;
 
 import com.classroom.manager.user.application.exception.AdminNotFoundException;
 import com.classroom.manager.user.domain.Admin;
-import com.classroom.manager.user.domain.dto.AdminLoginRequest;
+import com.classroom.manager.user.application.dto.AdminLoginRequest;
 import com.classroom.manager.user.domain.repository.AdminRepository;
 import com.classroom.manager.user.infra.security.JwtProvider;
 import com.classroom.manager.user.infra.security.dto.TokenPayLoad;

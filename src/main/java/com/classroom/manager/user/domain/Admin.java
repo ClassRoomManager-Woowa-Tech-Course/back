@@ -1,6 +1,6 @@
 package com.classroom.manager.user.domain;
 
-import com.classroom.manager.user.domain.dto.RegisterAdminRequest;
+import com.classroom.manager.user.application.dto.RegisterAdminRequest;
 import com.classroom.manager.user.domain.exception.AdminLoginFailedException;
 import com.classroom.manager.user.infra.security.dto.TokenPayLoad;
 import jakarta.persistence.Entity;

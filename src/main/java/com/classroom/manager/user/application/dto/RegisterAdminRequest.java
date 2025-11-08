@@ -1,4 +1,4 @@
-package com.classroom.manager.user.domain.dto;
+package com.classroom.manager.user.application.dto;
 
 import com.classroom.manager.user.domain.Authorization;
 import com.classroom.manager.user.domain.Role;

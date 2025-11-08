@@ -6,7 +6,7 @@ import com.classroom.manager.user.domain.Active;
 import com.classroom.manager.user.domain.Admin;
 import com.classroom.manager.user.domain.Authorization;
 import com.classroom.manager.user.domain.Role;
-import com.classroom.manager.user.domain.dto.RegisterAdminRequest;
+import com.classroom.manager.user.application.dto.RegisterAdminRequest;
 import com.classroom.manager.user.domain.repository.AdminRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -4,7 +4,7 @@ import com.classroom.manager.user.application.exception.AdminNotFoundException;
 import com.classroom.manager.user.domain.Active;
 import com.classroom.manager.user.domain.Admin;
 import com.classroom.manager.user.domain.Authorization;
-import com.classroom.manager.user.domain.dto.AdminLoginRequest;
+import com.classroom.manager.user.application.dto.AdminLoginRequest;
 import com.classroom.manager.user.domain.exception.AdminLoginFailedException;
 import com.classroom.manager.user.domain.repository.AdminRepository;
 import com.classroom.manager.user.infra.security.JwtProvider;

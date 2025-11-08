@@ -1,4 +1,4 @@
-package com.classroom.manager.user.domain.dto;
+package com.classroom.manager.user.application.dto;
 
 import lombok.Builder;
 
