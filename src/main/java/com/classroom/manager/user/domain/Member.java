@@ -1,4 +1,4 @@
-package com.classroom.manager.member.domain;
+package com.classroom.manager.user.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
