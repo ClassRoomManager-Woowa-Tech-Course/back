@@ -100,7 +100,7 @@ erDiagram
         string member_id FK
         bigint room_id FK
         datetime date
-        string item
+        Item item "PROJECTOR, PC, SPEAKER, MICROPHONE"
         string contact
         string content
         Status status "PENDING, COMPLETED"
