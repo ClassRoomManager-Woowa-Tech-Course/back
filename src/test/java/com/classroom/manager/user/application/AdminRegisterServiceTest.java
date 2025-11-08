@@ -6,7 +6,7 @@ import com.classroom.manager.user.domain.Active;
 import com.classroom.manager.user.domain.Admin;
 import com.classroom.manager.user.domain.Authorization;
 import com.classroom.manager.user.domain.Role;
-import com.classroom.manager.user.application.dto.RegisterAdminRequest;
+import com.classroom.manager.user.application.dto.AdminRegisterRequest;
 import com.classroom.manager.user.domain.repository.AdminRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,12 +38,12 @@ class AdminRegisterServiceTest {
     @InjectMocks
     private AdminRegisterService adminRegisterService;
 
-    private RegisterAdminRequest registerAdminRequest;
+    private AdminRegisterRequest adminRegisterRequest;
 
 
     @BeforeEach
     void setUp() {
-        registerAdminRequest = RegisterAdminRequest.builder()
+        adminRegisterRequest = AdminRegisterRequest.builder()
                 .adminId("20200000")
                 .name("admin")
                 .password("admin")
@@ -56,10 +56,10 @@ class AdminRegisterServiceTest {
     @DisplayName("새로운 관리자를 등록하면 AdminRepository에 저장된다.")
     @Test
     void adminRegister() {
-        when(adminRepository.existsById(registerAdminRequest.adminId())).thenReturn(false);
-        when(passwordEncoder.encode(registerAdminRequest.password())).thenReturn("encoded");
+        when(adminRepository.existsById(adminRegisterRequest.adminId())).thenReturn(false);
+        when(passwordEncoder.encode(adminRegisterRequest.password())).thenReturn("encoded");
 
-        adminRegisterService.register(registerAdminRequest);
+        adminRegisterService.register(adminRegisterRequest);
 
         verify(adminRepository).save(Mockito.any(Admin.class));
     }
@@ -67,44 +67,44 @@ class AdminRegisterServiceTest {
     @DisplayName("이미 존재하는 관리자이면 에러를 발생한다.")
     @Test
     void adminRegisterFail() {
-        when(adminRepository.existsById(registerAdminRequest.adminId())).thenReturn(true);
+        when(adminRepository.existsById(adminRegisterRequest.adminId())).thenReturn(true);
 
-        assertThatThrownBy(() -> adminRegisterService.register(registerAdminRequest))
+        assertThatThrownBy(() -> adminRegisterService.register(adminRegisterRequest))
                 .isInstanceOf(AdminAlreadyExistException.class);
     }
 
     @DisplayName("AdminId가 일치하는 관리자가 있으면 삭제한다.")
     @Test
     void adminDelete() {
-        when(adminRepository.existsById(registerAdminRequest.adminId())).thenReturn(true);
+        when(adminRepository.existsById(adminRegisterRequest.adminId())).thenReturn(true);
 
-        adminRegisterService.delete(registerAdminRequest);
+        adminRegisterService.delete(adminRegisterRequest);
 
-        verify(adminRepository).deleteById(registerAdminRequest.adminId());
+        verify(adminRepository).deleteById(adminRegisterRequest.adminId());
     }
 
     @DisplayName("AdminId가 일치하는 관리자가 없으면 에러가 발생한다.")
     @Test
     void adminDeleteFail() {
-        when(adminRepository.existsById(registerAdminRequest.adminId())).thenReturn(false);
+        when(adminRepository.existsById(adminRegisterRequest.adminId())).thenReturn(false);
 
-        assertThatThrownBy(() -> adminRegisterService.delete(registerAdminRequest))
+        assertThatThrownBy(() -> adminRegisterService.delete(adminRegisterRequest))
                 .isInstanceOf(AdminNotFoundException.class);
     }
 
     @DisplayName("AdminId가 일치하는 관리자가 있으면 휴면 처리한다.")
     @Test
     void adminUpdate() {
-        when(adminRepository.existsById(registerAdminRequest.adminId())).thenReturn(true);
+        when(adminRepository.existsById(adminRegisterRequest.adminId())).thenReturn(true);
         Admin admin = Admin.builder()
-                .adminId(registerAdminRequest.adminId())
+                .adminId(adminRegisterRequest.adminId())
                 .active(Active.ACTIVE)
                 .build();
-        when(adminRepository.findById(registerAdminRequest.adminId())).thenReturn(Optional.of(admin));
+        when(adminRepository.findById(adminRegisterRequest.adminId())).thenReturn(Optional.of(admin));
 
-        adminRegisterService.suspend(registerAdminRequest);
+        adminRegisterService.suspend(adminRegisterRequest);
 
-        verify(adminRepository).findById(registerAdminRequest.adminId());
+        verify(adminRepository).findById(adminRegisterRequest.adminId());
         verify(adminRepository).save(Mockito.any(Admin.class));
 
         assertThat(ReflectionTestUtils.getField(admin, "active")).isEqualTo(Active.INACTIVE);
@@ -113,9 +113,9 @@ class AdminRegisterServiceTest {
     @DisplayName("AdminId가 일치하는 관리자가 없으면 에러가 발생한다.")
     @Test
     void adminUpdateFail() {
-        when(adminRepository.existsById(registerAdminRequest.adminId())).thenReturn(false);
+        when(adminRepository.existsById(adminRegisterRequest.adminId())).thenReturn(false);
 
-        assertThatThrownBy(() -> adminRegisterService.suspend(registerAdminRequest))
+        assertThatThrownBy(() -> adminRegisterService.suspend(adminRegisterRequest))
                 .isInstanceOf(AdminNotFoundException.class);
     }
 }

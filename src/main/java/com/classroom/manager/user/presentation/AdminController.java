@@ -3,7 +3,7 @@ package com.classroom.manager.user.presentation;
 import com.classroom.manager.user.application.AdminLoginService;
 import com.classroom.manager.user.application.AdminRegisterService;
 import com.classroom.manager.user.application.dto.AdminLoginRequest;
-import com.classroom.manager.user.application.dto.RegisterAdminRequest;
+import com.classroom.manager.user.application.dto.AdminRegisterRequest;
 import com.classroom.manager.user.infra.security.AdminAuthorizationValidator;
 import com.classroom.manager.user.infra.security.annotation.Auth;
 import com.classroom.manager.user.infra.security.dto.TokenPayLoad;
@@ -22,23 +22,23 @@ public class AdminController {
     private final AdminAuthorizationValidator adminAuthorizationValidator;
 
     @PostMapping
-    public ResponseEntity<Void> registerAdmin(@Auth TokenPayLoad tokenPayLoad, @RequestBody RegisterAdminRequest registerAdminRequest) {
-        adminAuthorizationValidator.checkCanRegister(tokenPayLoad, registerAdminRequest.authorization());
-        adminRegisterService.register(registerAdminRequest);
+    public ResponseEntity<Void> registerAdmin(@Auth TokenPayLoad tokenPayLoad, @RequestBody AdminRegisterRequest adminRegisterRequest) {
+        adminAuthorizationValidator.checkCanRegister(tokenPayLoad, adminRegisterRequest.authorization());
+        adminRegisterService.register(adminRegisterRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteAdmin(@Auth TokenPayLoad tokenPayLoad, @RequestBody RegisterAdminRequest registerAdminRequest) {
+    public ResponseEntity<Void> deleteAdmin(@Auth TokenPayLoad tokenPayLoad, @RequestBody AdminRegisterRequest adminRegisterRequest) {
         adminAuthorizationValidator.checkIsAdminOrHigher(tokenPayLoad);
-        adminRegisterService.delete(registerAdminRequest);
+        adminRegisterService.delete(adminRegisterRequest);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping
-    public ResponseEntity<Void> updateAdmin(@Auth TokenPayLoad tokenPayLoad, @RequestBody RegisterAdminRequest registerAdminRequest) {
+    public ResponseEntity<Void> updateAdmin(@Auth TokenPayLoad tokenPayLoad, @RequestBody AdminRegisterRequest adminRegisterRequest) {
         adminAuthorizationValidator.checkIsSuperAdmin(tokenPayLoad);
-        adminRegisterService.suspend(registerAdminRequest);
+        adminRegisterService.suspend(adminRegisterRequest);
         return ResponseEntity.ok().build();
     }
 

@@ -5,7 +5,7 @@ import com.classroom.manager.user.domain.Role;
 import lombok.Builder;
 
 @Builder
-public record RegisterAdminRequest(
+public record AdminRegisterRequest(
         String adminId,
         String name,
         String contact,

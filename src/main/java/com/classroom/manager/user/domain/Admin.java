@@ -1,6 +1,6 @@
 package com.classroom.manager.user.domain;
 
-import com.classroom.manager.user.application.dto.RegisterAdminRequest;
+import com.classroom.manager.user.application.dto.AdminRegisterRequest;
 import com.classroom.manager.user.domain.exception.AdminLoginFailedException;
 import com.classroom.manager.user.infra.security.dto.TokenPayLoad;
 import jakarta.persistence.Entity;
@@ -33,14 +33,14 @@ public class Admin {
     @Enumerated(EnumType.STRING)
     private Active active;
 
-    public static Admin from(RegisterAdminRequest registerAdminRequest, PasswordEncoder passwordEncoder) {
+    public static Admin from(AdminRegisterRequest adminRegisterRequest, PasswordEncoder passwordEncoder) {
         return Admin.builder()
-                .adminId(registerAdminRequest.adminId())
-                .role(registerAdminRequest.role())
-                .name(registerAdminRequest.name())
-                .password(passwordEncoder.encode(registerAdminRequest.password()))
-                .contact(registerAdminRequest.contact())
-                .authorization(registerAdminRequest.authorization())
+                .adminId(adminRegisterRequest.adminId())
+                .role(adminRegisterRequest.role())
+                .name(adminRegisterRequest.name())
+                .password(passwordEncoder.encode(adminRegisterRequest.password()))
+                .contact(adminRegisterRequest.contact())
+                .authorization(adminRegisterRequest.authorization())
                 .active(Active.ACTIVE)
                 .build();
     }
