@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,6 +26,12 @@ public class AdminController {
     @DeleteMapping
     public ResponseEntity<Void> deleteAdmin(RegisterAdminRequest registerAdminRequest) {
         adminRegisterService.delete(registerAdminRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping
+    public ResponseEntity<Void> updateAdmin(RegisterAdminRequest registerAdminRequest) {
+        adminRegisterService.suspend(registerAdminRequest);
         return ResponseEntity.ok().build();
     }
 }
