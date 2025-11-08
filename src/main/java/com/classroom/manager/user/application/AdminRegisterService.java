@@ -15,11 +15,11 @@ public class AdminRegisterService {
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Admin register(RegisterAdminRequest registerAdminRequest) {
+    public void register(RegisterAdminRequest registerAdminRequest) {
         if (adminRepository.existsById(registerAdminRequest.adminId())) {
             throw new AdminAlreadyExistException(registerAdminRequest.adminId());
         }
         Admin admin = Admin.from(registerAdminRequest, passwordEncoder);
-        return adminRepository.save(admin);
+        adminRepository.save(admin);
     }
 }
