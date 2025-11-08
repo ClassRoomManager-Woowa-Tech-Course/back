@@ -15,6 +15,7 @@ erDiagram
         string role
         string authorization
         string active
+        string password
     }
 
     CLASSROOM {
@@ -83,6 +84,7 @@ erDiagram
         string admin_id PK
         string name
         string contact
+        string password
         Role role "STUDENT, STAFF"
         Authorization authorization "SUPER_ADMIN, ADMIN, EDITOR, VIEWER"
         Active active "ACTIVE, INACTIVE"
