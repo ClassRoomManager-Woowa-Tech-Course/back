@@ -10,9 +10,10 @@ public class Member {
 
     @Id
     private String memberId;
-    private String contact;
-    private String name;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String contact;
+    private String name;
 }
