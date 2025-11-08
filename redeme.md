@@ -92,7 +92,7 @@ erDiagram
 
     CLASSROOM {
         bigint room_id PK
-        string roomNumber UK
+        string room_code UK
     }
 
     REPORT {
