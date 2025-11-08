@@ -23,15 +23,15 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class SuperAdminInitializerTest {
 
-    @Mock
-    private AdminRepository adminRepository;
-    private PasswordEncoder passwordEncoder;
-    private SuperAdminInitializer superAdminInitializer;
-
     private final String TEST_ID = "super_admin";
     private final String TEST_PW = "test_password123";
     private final String TEST_NAME = "Test Admin";
     private final String TEST_CONTACT = "010-1111-2222";
+
+    @Mock
+    private AdminRepository adminRepository;
+    private PasswordEncoder passwordEncoder;
+    private SuperAdminInitializer superAdminInitializer;
 
     @BeforeEach
     void setUp() {
@@ -59,6 +59,7 @@ class SuperAdminInitializerTest {
         assertThat(ReflectionTestUtils.getField(capturedAdmin, "adminId")).isEqualTo(TEST_ID);
         assertThat(ReflectionTestUtils.getField(capturedAdmin, "name")).isEqualTo(TEST_NAME);
         assertThat(ReflectionTestUtils.getField(capturedAdmin, "authorization")).isEqualTo(Authorization.SUPER_ADMIN);
+        assertThat(ReflectionTestUtils.getField(capturedAdmin, "contact")).isEqualTo(TEST_CONTACT);
         String capturedPassword = (String) ReflectionTestUtils.getField(capturedAdmin, "password");
         assertThat(passwordEncoder.matches(TEST_PW, capturedPassword)).isTrue();
     }
