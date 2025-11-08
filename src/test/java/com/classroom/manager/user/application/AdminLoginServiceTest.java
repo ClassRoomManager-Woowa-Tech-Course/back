@@ -9,7 +9,6 @@ import com.classroom.manager.user.domain.exception.AdminLoginFailedException;
 import com.classroom.manager.user.domain.repository.AdminRepository;
 import com.classroom.manager.user.infra.security.JwtProvider;
 import com.classroom.manager.user.infra.security.dto.TokenPayLoad;
-import com.classroom.manager.user.infra.security.exception.UnAuthorizationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
