@@ -1,6 +1,7 @@
 package com.classroom.manager.user.application;
 
 import com.classroom.manager.user.application.exception.AdminAlreadyExistException;
+import com.classroom.manager.user.application.exception.AdminNotFoundException;
 import com.classroom.manager.user.domain.Admin;
 import com.classroom.manager.user.domain.Authorization;
 import com.classroom.manager.user.domain.Role;
@@ -65,5 +66,24 @@ class AdminRegisterServiceTest {
 
         assertThatThrownBy(() -> adminRegisterService.register(registerAdminRequest))
                 .isInstanceOf(AdminAlreadyExistException.class);
+    }
+
+    @DisplayName("AdminId가 일치하는 관리자가 있으면 삭제한다.")
+    @Test
+    void adminDelete() {
+        when(adminRepository.existsById(registerAdminRequest.adminId())).thenReturn(true);
+
+        adminRegisterService.delete(registerAdminRequest);
+
+        verify(adminRepository).deleteById(registerAdminRequest.adminId());
+    }
+
+    @DisplayName("AdminId가 일치하는 관리자가 없으면 에러가 발생한다.")
+    @Test
+    void adminDeleteFail() {
+        when(adminRepository.existsById(registerAdminRequest.adminId())).thenReturn(false);
+
+        assertThatThrownBy(() -> adminRegisterService.delete(registerAdminRequest))
+                .isInstanceOf(AdminNotFoundException.class);
     }
 }
