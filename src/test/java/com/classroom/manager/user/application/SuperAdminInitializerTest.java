@@ -3,6 +3,7 @@ package com.classroom.manager.user.application;
 import com.classroom.manager.user.domain.Admin;
 import com.classroom.manager.user.domain.Authorization;
 import com.classroom.manager.user.domain.repository.AdminRepository;
+import com.classroom.manager.user.domain.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,14 +31,17 @@ class SuperAdminInitializerTest {
 
     @Mock
     private AdminRepository adminRepository;
+
+    @Mock
+    private MemberRepository memberRepository;
+
     private PasswordEncoder passwordEncoder;
     private SuperAdminInitializer superAdminInitializer;
 
     @BeforeEach
     void setUp() {
         passwordEncoder = new BCryptPasswordEncoder();
-        superAdminInitializer = new SuperAdminInitializer(adminRepository, passwordEncoder);
-
+        superAdminInitializer = new SuperAdminInitializer(adminRepository, memberRepository, passwordEncoder);
         ReflectionTestUtils.setField(superAdminInitializer, "adminId", TEST_ID);
         ReflectionTestUtils.setField(superAdminInitializer, "adminPassword", TEST_PW);
         ReflectionTestUtils.setField(superAdminInitializer, "adminName", TEST_NAME);
@@ -53,7 +57,7 @@ class SuperAdminInitializerTest {
         verify(adminRepository, times(1)).save(any(Admin.class));
 
         ArgumentCaptor<Admin> adminCaptor = ArgumentCaptor.forClass(Admin.class);
-        verify(adminRepository).save(adminCaptor.capture()); // 캡처
+        verify(adminRepository).save(adminCaptor.capture());
 
         Admin capturedAdmin = adminCaptor.getValue();
         assertThat(ReflectionTestUtils.getField(capturedAdmin, "adminId")).isEqualTo(TEST_ID);

@@ -1,10 +1,8 @@
 package com.classroom.manager.user.application;
 
-import com.classroom.manager.user.domain.Active;
-import com.classroom.manager.user.domain.Admin;
-import com.classroom.manager.user.domain.Authorization;
-import com.classroom.manager.user.domain.Role;
+import com.classroom.manager.user.domain.*;
 import com.classroom.manager.user.domain.repository.AdminRepository;
+import com.classroom.manager.user.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class SuperAdminInitializer implements CommandLineRunner {
 
     private final AdminRepository adminRepository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${admin.super.id}")
@@ -47,8 +46,19 @@ public class SuperAdminInitializer implements CommandLineRunner {
 
             adminRepository.save(admin);
             log.info("Super Admin(ID: {}) account has been initialized.", adminId);
+            registerAdminToMember();
             return;
         }
         log.info("Super Admin(ID: {}) account already exists. Skipping initialization.", adminId);
+    }
+
+    private void registerAdminToMember() {
+        Member member = Member.builder()
+                .memberId(adminId)
+                .role(Role.STAFF)
+                .name(adminName)
+                .contact(adminContact)
+                .build();
+        memberRepository.save(member);
     }
 }
