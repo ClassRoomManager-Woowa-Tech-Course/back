@@ -90,14 +90,15 @@ class FileServiceTest {
     @Test
     @DisplayName("파일 엔티티 목록(2개)을 받아 S3 삭제와 DB 삭제를 2번 실행한다")
     void deleteAllFilesSuccess() {
-        File file1 = File.builder().id(101L).fileUrl("s3-key-1").build();
-        File file2 = File.builder().id(102L).fileUrl("s3-key-2").build();
+        File file1 = File.builder().id(101L).fileUrl("s3-key-1").relatedId(10L).relatedType(FileRelatedType.REPORT).build();
+        File file2 = File.builder().id(102L).fileUrl("s3-key-2").relatedId(10L).relatedType(FileRelatedType.REPORT).build();
         List<File> files = List.of(file1, file2);
 
+        when(fileService.findFilesByRelatedId(10L, FileRelatedType.REPORT)).thenReturn(files);
         when(fileRepository.findById(101L)).thenReturn(Optional.of(file1));
         when(fileRepository.findById(102L)).thenReturn(Optional.of(file2));
 
-        fileService.deleteAllFiles(files);
+        fileService.deleteAllFiles(10L, FileRelatedType.REPORT);
 
         verify(fileStorageService, times(1)).delete("s3-key-1");
         verify(fileStorageService, times(1)).delete("s3-key-2");
@@ -109,11 +110,19 @@ class FileServiceTest {
     @Test
     @DisplayName("삭제할 파일을 DB에서 찾지 못하면 EntityNotFoundException을 던진다")
     void deleteFileThrowsExceptionWhenFileNotFound() {
-        File file1 = File.builder().id(101L).fileUrl("s3-key-1").build();
-
+        Long reportId = 10L;
+        FileRelatedType fileRelatedType = FileRelatedType.GUIDELINE;
+        File file = File.builder()
+                .id(101L)
+                .fileUrl("s3-key-1")
+                .relatedId(10L)
+                .relatedType(fileRelatedType)
+                .build();
+        List<File> files = List.of(file);
+        when(fileRepository.findByRelatedIdAndRelatedType(reportId, fileRelatedType)).thenReturn(files);
         when(fileRepository.findById(101L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> fileService.deleteAllFiles(List.of(file1)))
+        assertThatThrownBy(() -> fileService.deleteAllFiles(reportId, fileRelatedType))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining("파일을 찾을 수 없습니다: 101");
 
@@ -131,7 +140,7 @@ class FileServiceTest {
         when(fileRepository.findByRelatedIdAndRelatedType(testRelatedId, testType))
                 .thenReturn(expectedList);
 
-        List<File> actualList = fileService.findFilesByReportIdAndRelatedType(testRelatedId, testType);
+        List<File> actualList = fileService.findFilesByRelatedId(testRelatedId, testType);
 
         verify(fileRepository, times(1)).findByRelatedIdAndRelatedType(testRelatedId, testType);
         assertThat(actualList).isEqualTo(expectedList);

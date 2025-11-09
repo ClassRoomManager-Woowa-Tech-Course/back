@@ -9,4 +9,6 @@ import java.util.List;
 public interface FileRepository extends JpaRepository<File, Long> {
 
     List<File> findByRelatedIdAndRelatedType(Long relatedId, FileRelatedType relatedType);
+
+    List<File> findAllByRelatedIdInAndRelatedType(List<Long> relatedId, FileRelatedType relatedType);
 }

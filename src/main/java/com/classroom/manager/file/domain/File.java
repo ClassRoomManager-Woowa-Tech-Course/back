@@ -30,4 +30,8 @@ public class File {
     public Long id() {
         return id;
     }
+
+    public Long relatedId() {
+        return relatedId;
+    }
 }

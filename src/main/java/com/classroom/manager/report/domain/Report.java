@@ -5,6 +5,7 @@ import com.classroom.manager.report.application.dto.ReportRegisterRequest;
 import com.classroom.manager.report.presentation.dto.ReportResponse;
 import com.classroom.manager.user.domain.Member;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -53,13 +54,14 @@ public class Report {
                 .build();
     }
 
-    public ReportResponse to() {
+    public ReportResponse to(List<String> fileUrls) {
         return ReportResponse.builder()
                 .id(id)
                 .roomCode(classroom.roomCode())
                 .date(date)
                 .status(status)
                 .item(item)
+                .fileUrls(fileUrls)
                 .build();
     }
 

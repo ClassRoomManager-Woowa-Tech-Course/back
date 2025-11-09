@@ -20,11 +20,9 @@ public class FileService {
     private final FileRepository fileRepository;
 
     public void uploadAllFiles(Long relatedId, FileRelatedType fileRelatedType, List<MultipartFile> files) {
-        for (MultipartFile file : files) {
-            if (file != null && !file.isEmpty()) {
-                uploadFile(relatedId, fileRelatedType, file);
-            }
-        }
+        files.stream()
+                .filter(file -> file != null && !file.isEmpty())
+                .forEach(file -> uploadFile(relatedId, fileRelatedType, file));
     }
 
     private void uploadFile(Long relatedId, FileRelatedType fileRelatedType, MultipartFile multipartFile) {
@@ -38,7 +36,8 @@ public class FileService {
         fileRepository.save(file);
     }
 
-    public void deleteAllFiles(List<File> files) {
+    public void deleteAllFiles(Long reportId, FileRelatedType fileRelatedType) {
+        List<File> files = findFilesByRelatedId(reportId, fileRelatedType);
         for (File file : files) {
             deleteFile(file.id());
         }
@@ -51,7 +50,14 @@ public class FileService {
         fileRepository.deleteById(fileId);
     }
 
-    public List<File> findFilesByReportIdAndRelatedType(Long relatedId, FileRelatedType fileRelatedType) {
+    public List<File> findFilesByRelatedId(Long relatedId, FileRelatedType fileRelatedType) {
         return fileRepository.findByRelatedIdAndRelatedType(relatedId, fileRelatedType);
+    }
+
+    public List<File> findFilesByRelatedIds(List<Long> relatedIds, FileRelatedType fileRelatedType) {
+        return fileRepository.findAllByRelatedIdInAndRelatedType(relatedIds, fileRelatedType);
+    }
+    public List<String> extractFileUrls(List<File> files) {
+        return files.stream().map(File::fileUrl).toList();
     }
 }

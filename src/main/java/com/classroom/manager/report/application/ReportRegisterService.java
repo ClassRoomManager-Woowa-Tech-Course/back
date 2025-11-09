@@ -13,12 +13,13 @@ import com.classroom.manager.report.domain.repository.ReportRepository;
 import com.classroom.manager.report.presentation.dto.ReportResponse;
 import com.classroom.manager.user.domain.Member;
 import com.classroom.manager.user.domain.repository.MemberRepository;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,17 +39,22 @@ public class ReportRegisterService {
     }
 
     public void delete(Long reportId) {
-        List<File> files = fileService.findFilesByReportIdAndRelatedType(reportId, FileRelatedType.REPORT);
-        fileService.deleteAllFiles(files);
+        fileService.deleteAllFiles(reportId, FileRelatedType.REPORT);
         reportRepository.deleteById(reportId);
     }
 
     public List<ReportResponse> findReports() {
         LocalDateTime cutoffDate = LocalDateTime.now().minusDays(30);
         List<Report> reports = reportRepository.findActiveReports(Status.PENDING, Status.COMPLETED, cutoffDate);
-        List<ReportResponse> reportResponses = new ArrayList<>();
+        List<Long> reportIds = reports.stream().map(Report::relatedId).toList();
+        List<File> allFiles = fileService.findFilesByRelatedIds(reportIds, FileRelatedType.REPORT);
+        Map<Long, List<File>> filesMap = allFiles.stream()
+                .collect(Collectors.groupingBy(File::relatedId));
         return reports.stream()
-                .map(Report::to)
+                .map(report -> {
+                    List<File> filesForThisReport = filesMap.getOrDefault(report.relatedId(), List.of());
+                    return convertToResponse(report, filesForThisReport);
+                })
                 .toList();
     }
 
@@ -60,6 +66,13 @@ public class ReportRegisterService {
 
     public ReportResponse findReport(Long reportId) {
         Report report = reportRepository.getByReportId(reportId);
-        return report.to();
+        List<File> files = fileService.findFilesByRelatedId(reportId,
+                FileRelatedType.REPORT);
+        return convertToResponse(report, files);
+    }
+
+    private ReportResponse convertToResponse(Report report, List<File> files) {
+        List<String> urls = fileService.extractFileUrls(files);
+        return report.to(urls);
     }
 }
