@@ -1,0 +1,17 @@
+package com.classroom.manager.report.presentation.dto;
+
+import com.classroom.manager.report.domain.Item;
+import com.classroom.manager.report.domain.Status;
+import lombok.Builder;
+
+import java.time.LocalDateTime;
+
+@Builder
+public record ReportResponse (
+        Long id,
+        String roomCode,
+        LocalDateTime date,
+        Status status,
+        Item item
+) {
+}

@@ -19,4 +19,8 @@ public class Classroom {
     public Classroom(String classCode) {
         this.roomCode = classCode;
     }
+
+    public String roomCode() {
+        return roomCode;
+    }
 }
