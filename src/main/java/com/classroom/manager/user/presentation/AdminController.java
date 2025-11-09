@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admins")
+@RequestMapping("/api/admins")
 @RequiredArgsConstructor
 public class AdminController {
 
