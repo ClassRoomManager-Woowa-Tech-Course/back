@@ -52,8 +52,8 @@ public class ReportRegisterService {
                 .collect(Collectors.groupingBy(File::relatedId));
         return reports.stream()
                 .map(report -> {
-                    List<File> filesForThisReport = filesMap.getOrDefault(report.relatedId(), List.of());
-                    return convertToResponse(report, filesForThisReport);
+                    List<File> files = filesMap.getOrDefault(report.relatedId(), List.of());
+                    return convertToResponse(report, files);
                 })
                 .toList();
     }
