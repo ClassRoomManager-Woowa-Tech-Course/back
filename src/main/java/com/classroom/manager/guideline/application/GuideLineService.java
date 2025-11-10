@@ -48,4 +48,11 @@ public class GuideLineService {
                     return guideLine.to(fileService.extractFileUrls(files));
                 }).toList();
     }
+
+    @Transactional
+    public GuideLineResponse findGuideLine(Long guideLineId) {
+        List<File> files = fileService.findFilesByRelatedId(guideLineId, FileRelatedType.GUIDELINE);
+        List<String> urls = fileService.extractFileUrls(files);
+        return guideLineRepository.getGuideLineById(guideLineId).to(urls);
+    }
 }
