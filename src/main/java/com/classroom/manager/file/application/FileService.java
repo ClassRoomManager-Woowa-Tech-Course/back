@@ -20,6 +20,9 @@ public class FileService {
     private final FileRepository fileRepository;
 
     public void uploadAllFiles(Long relatedId, FileRelatedType fileRelatedType, List<MultipartFile> files) {
+        if (files == null || files.isEmpty()) {
+            return;
+        }
         files.stream()
                 .filter(file -> file != null && !file.isEmpty())
                 .forEach(file -> uploadFile(relatedId, fileRelatedType, file));
