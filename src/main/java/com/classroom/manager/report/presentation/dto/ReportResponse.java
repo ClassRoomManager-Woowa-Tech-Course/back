@@ -10,9 +10,12 @@ import java.time.LocalDateTime;
 @Builder
 public record ReportResponse (
         Long id,
+        String memberId,
+        String contact,
         String roomCode,
         LocalDateTime date,
         Status status,
+        String content,
         Item item,
         List<String> fileUrls
 ) {
