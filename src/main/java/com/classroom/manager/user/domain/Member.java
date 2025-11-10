@@ -26,4 +26,8 @@ public class Member {
     public String name() {
         return name;
     }
+
+    public String memberId() {
+        return memberId;
+    }
 }
