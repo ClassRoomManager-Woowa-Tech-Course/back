@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/guideLines")
+@RequestMapping("/api/guideLines")
 public class GuideLineController {
 
     private final GuideLineService guideLineService;
