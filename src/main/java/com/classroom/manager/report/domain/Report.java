@@ -51,6 +51,7 @@ public class Report {
                 .status(reportRegisterRequest.status())
                 .contact(reportRegisterRequest.contact())
                 .content(reportRegisterRequest.content())
+                .status(Status.PENDING)
                 .build();
     }
 
