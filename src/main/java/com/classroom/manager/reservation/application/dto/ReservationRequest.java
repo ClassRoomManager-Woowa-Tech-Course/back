@@ -4,13 +4,14 @@ import com.classroom.manager.user.domain.Role;
 import java.time.LocalDateTime;
 
 public record ReservationRequest (
-        Role role,
         String memberId,
         String contact,
+        Role role,
         String roomCode,
         String title,
         String purpose,
         LocalDateTime startDate,
-        LocalDateTime endDate
+        LocalDateTime endDate,
+        String password
 ) {
 }

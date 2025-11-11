@@ -2,6 +2,7 @@ package com.classroom.manager.reservation.domain;
 
 import com.classroom.manager.classroom.domain.Classroom;
 import com.classroom.manager.reservation.application.dto.ReservationRequest;
+import com.classroom.manager.reservation.domain.exception.WrongPasswordException;
 import com.classroom.manager.reservation.presentation.dto.ReservationResponse;
 import com.classroom.manager.user.domain.Member;
 import com.classroom.manager.user.domain.Role;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Builder
@@ -40,13 +42,31 @@ public class Reservation {
     private String title;
     private String purpose;
     private String contact;
+    private String password;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    public static Reservation from(ReservationRequest reservationRequest, Classroom classroom, Member member) {
+    public void validPassword(String password, PasswordEncoder passwordEncoder) {
+        if (passwordEncoder.matches(password, this.password)) {
+            return;
+        }
+        throw new WrongPasswordException();
+    }
+
+    public void update(ReservationRequest reservationRequest, Classroom classroom) {
+        this.classroom = classroom;
+        this.title = reservationRequest.title();
+        this.purpose = reservationRequest.purpose();
+        this.contact = reservationRequest.contact();
+        this.startDate = reservationRequest.startDate();
+        this.endDate = reservationRequest.endDate();
+    }
+
+    public static Reservation from(ReservationRequest reservationRequest, Classroom classroom, Member member, PasswordEncoder passwordEncoder) {
         return Reservation.builder()
                 .member(member)
                 .classroom(classroom)
+                .password(passwordEncoder.encode(reservationRequest.password()))
                 .role(reservationRequest.role())
                 .title(reservationRequest.title())
                 .purpose(reservationRequest.purpose())
@@ -65,6 +85,10 @@ public class Reservation {
                 .endTime(endDate.toLocalTime())
                 .roomCode(classroom.roomCode())
                 .memberName(member.name())
+                .memberId(member.memberId())
+                .role(role)
+                .purpose(purpose)
+                .contact(contact)
                 .build();
     }
 }
