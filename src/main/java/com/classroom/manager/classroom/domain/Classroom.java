@@ -1,5 +1,6 @@
 package com.classroom.manager.classroom.domain;
 
+import com.classroom.manager.classroom.presentation.dto.ClassroomResponse;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,5 +23,11 @@ public class Classroom {
 
     public String roomCode() {
         return roomCode;
+    }
+
+    public ClassroomResponse to() {
+        return ClassroomResponse.builder()
+                .roomCode(this.roomCode)
+                .build();
     }
 }
