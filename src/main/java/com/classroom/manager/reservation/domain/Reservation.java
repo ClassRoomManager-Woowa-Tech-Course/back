@@ -6,6 +6,8 @@ import com.classroom.manager.reservation.presentation.dto.ReservationResponse;
 import com.classroom.manager.user.domain.Member;
 import com.classroom.manager.user.domain.Role;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,14 +27,19 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Classroom classroom;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private String title;
     private String purpose;
     private String contact;
-    private Role role;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
