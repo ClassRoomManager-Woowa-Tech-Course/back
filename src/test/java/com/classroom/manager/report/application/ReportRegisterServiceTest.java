@@ -3,7 +3,6 @@ package com.classroom.manager.report.application;
 import com.classroom.manager.classroom.domain.Classroom;
 import com.classroom.manager.classroom.domain.repository.ClassroomRepository;
 import com.classroom.manager.file.application.FileService;
-import com.classroom.manager.file.domain.File;
 import com.classroom.manager.file.domain.FileRelatedType;
 import com.classroom.manager.report.application.dto.ReportRegisterRequest;
 import com.classroom.manager.report.application.dto.ReportUpdateRequest;
@@ -138,7 +137,7 @@ class ReportRegisterServiceTest {
         reportRegisterService.update(updateRequest);
 
         verify(reportRepository, times(1)).getByReportId(42L);
-        verify(mockReport, times(1)).complete();
+        verify(mockReport, times(1)).updateStatus(updateRequest.status());
         verify(reportRepository, times(1)).save(mockReport);
     }
 

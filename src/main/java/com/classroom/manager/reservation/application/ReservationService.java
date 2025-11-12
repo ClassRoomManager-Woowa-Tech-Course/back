@@ -30,7 +30,6 @@ public class ReservationService {
     public ReservationResponse reservation(ReservationRequest reservationRequest) {
         Classroom classroom = classroomRepository.getByRoomCode(reservationRequest.roomCode());
         Member member = memberRepository.getByMemberId(reservationRequest.memberId());
-        log.info("password : {}",reservationRequest.password());
         Reservation reservation = reservationRepository.save(
                 Reservation.from(reservationRequest, classroom, member, passwordEncoder));
         return reservation.to();

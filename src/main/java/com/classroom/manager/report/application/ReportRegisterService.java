@@ -60,7 +60,7 @@ public class ReportRegisterService {
 
     public void update(ReportUpdateRequest reportUpdateRequest) {
         Report report = reportRepository.getByReportId(reportUpdateRequest.reportId());
-        report.complete();
+        report.updateStatus(reportUpdateRequest.status());
         reportRepository.save(report);
     }
 

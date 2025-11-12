@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,6 +42,9 @@ class ReservationServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private ReservationService reservationService;
 
@@ -54,14 +58,15 @@ class ReservationServiceTest {
         testMember = mock(Member.class);
         testClassroom = mock(Classroom.class);
         testRequest = new ReservationRequest(
-                Role.STAFF,
                 "testMemberId",
                 "010-1234-5678",
+                Role.STAFF,
                 "5413",
                 "Test Title",
                 "Test Purpose",
                 LocalDateTime.of(2025, 11, 10, 9, 0),
-                LocalDateTime.of(2025, 11, 10, 11, 0)
+                LocalDateTime.of(2025, 11, 10, 11, 0),
+                "admin_password"
         );
         testResponse = ReservationResponse.builder()
                 .reservationId(1L)
@@ -74,13 +79,22 @@ class ReservationServiceTest {
     void reservation_Success() {
         when(classroomRepository.getByRoomCode("5413")).thenReturn(testClassroom);
         when(memberRepository.getByMemberId("testMemberId")).thenReturn(testMember);
+        when(passwordEncoder.encode(any())).thenReturn("admin_password");
         ArgumentCaptor<Reservation> reservationCaptor = ArgumentCaptor.forClass(Reservation.class);
 
-        reservationService.reservation(testRequest);
+        Reservation mockReservation = mock(Reservation.class);
+        when(reservationRepository.save(reservationCaptor.capture())).thenReturn(mockReservation);
+        when(mockReservation.to()).thenReturn(testResponse);
+
+        ReservationResponse result = reservationService.reservation(testRequest);
 
         verify(classroomRepository, times(1)).getByRoomCode("5413");
         verify(memberRepository, times(1)).getByMemberId("testMemberId");
         verify(reservationRepository, times(1)).save(reservationCaptor.capture());
+        verify(mockReservation, times(1)).to();
+
+        assertThat(result).isEqualTo(testResponse);
+
         Reservation capturedReservation = reservationCaptor.getValue();
         assertThat(ReflectionTestUtils.getField(capturedReservation, "member")).isEqualTo(testMember);
         assertThat(ReflectionTestUtils.getField(capturedReservation, "classroom")).isEqualTo(testClassroom);

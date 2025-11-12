@@ -38,7 +38,7 @@ public class ReportController {
         return ResponseEntity.ok(reportRegisterService.findReport(reportId));
     }
 
-    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping
     public ResponseEntity<Void> updateReportStatus(@RequestBody ReportUpdateRequest reportUpdateRequest) {
         reportRegisterService.update(reportUpdateRequest);
         return ResponseEntity.ok().build();

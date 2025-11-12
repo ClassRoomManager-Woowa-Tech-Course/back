@@ -38,8 +38,8 @@ public class Report {
     private String contact;
     private String content;
 
-    public void complete() {
-        this.status = Status.COMPLETED;
+    public void updateStatus(Status status) {
+        this.status = status;
     }
 
     public static Report from(ReportRegisterRequest reportRegisterRequest, Member member, Classroom classroom) {
