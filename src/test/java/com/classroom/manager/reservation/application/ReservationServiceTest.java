@@ -76,7 +76,7 @@ class ReservationServiceTest {
 
     @Test
     @DisplayName("예약 등록(reservation) 시, Member와 Classroom을 조회하고 Reservation을 저장한다")
-    void reservation_Success() {
+    void reservationSuccess() {
         when(classroomRepository.getByRoomCode("5413")).thenReturn(testClassroom);
         when(memberRepository.getByMemberId("testMemberId")).thenReturn(testMember);
         when(passwordEncoder.encode(any())).thenReturn("admin_password");
@@ -104,7 +104,7 @@ class ReservationServiceTest {
 
     @Test
     @DisplayName("월별 조회 시, Repository를 호출하고 DTO 리스트로 변환하여 반환한다")
-    void findReservationByClassroomAndMonth_Success() {
+    void findReservationByClassroomAndMonthSuccess() {
         String roomCode = "5413";
         YearMonth yearMonth = YearMonth.of(2025, 11);
         Reservation mockReservation = mock(Reservation.class);
@@ -124,7 +124,7 @@ class ReservationServiceTest {
 
     @Test
     @DisplayName("월별 조회 시, 강의실을 찾지 못하면 예외를 던진다")
-    void findReservationByClassroomAndMonth_Fail_RoomNotFound() {
+    void findReservationByClassroomAndMonthFailRoomNotFound() {
         String roomCode = "INVALID_CODE";
         YearMonth yearMonth = YearMonth.of(2025, 11);
         when(classroomRepository.getByRoomCode(roomCode))
