@@ -1,8 +1,10 @@
 package com.classroom.manager.guideline.domain.exception;
 
+import com.classroom.manager.util.ErrorCode;
+
 public class NotFoundGuideLineException extends RuntimeException {
 
     public NotFoundGuideLineException() {
-        super("존재하지 않는 가이드라인입니다.");
+        super(ErrorCode.NOT_FOUND_GUIDELINE.getMessage());
     }
 }

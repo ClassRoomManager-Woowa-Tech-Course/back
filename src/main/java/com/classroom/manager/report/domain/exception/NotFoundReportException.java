@@ -1,8 +1,10 @@
 package com.classroom.manager.report.domain.exception;
 
+import com.classroom.manager.util.ErrorCode;
+
 public class NotFoundReportException extends RuntimeException {
 
     public NotFoundReportException() {
-        super("신고건을 찾지 못했습니다.");
+        super(ErrorCode.NOT_FOUND_REPORT.getMessage());
     }
 }

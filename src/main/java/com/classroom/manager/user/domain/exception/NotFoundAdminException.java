@@ -1,8 +1,10 @@
 package com.classroom.manager.user.domain.exception;
 
+import com.classroom.manager.util.ErrorCode;
+
 public class NotFoundAdminException extends RuntimeException {
 
     public NotFoundAdminException() {
-        super("존재하지 않는 관리자입니다.");
+        super(ErrorCode.NOT_FOUND_ADMIN.getMessage());
     }
 }

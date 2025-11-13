@@ -1,8 +1,10 @@
 package com.classroom.manager.reservation.domain.exception;
 
+import com.classroom.manager.util.ErrorCode;
+
 public class WrongPasswordException extends RuntimeException {
 
     public WrongPasswordException() {
-        super("잘못된 비밀번호입니다.");
+        super(ErrorCode.WRONG_PASSWORD.getMessage());
     }
 }

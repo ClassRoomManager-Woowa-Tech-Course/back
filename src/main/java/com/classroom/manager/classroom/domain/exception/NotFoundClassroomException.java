@@ -1,8 +1,10 @@
 package com.classroom.manager.classroom.domain.exception;
 
+import com.classroom.manager.util.ErrorCode;
+
 public class NotFoundClassroomException extends RuntimeException {
 
     public NotFoundClassroomException() {
-        super("존재하지 않는 강의실입니다.");
+        super(ErrorCode.NOT_FOUND_CLASSROOM.getMessage());
     }
 }

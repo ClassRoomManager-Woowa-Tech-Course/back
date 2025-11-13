@@ -2,6 +2,7 @@ package com.classroom.manager.file.infra;
 
 import com.classroom.manager.file.infra.dto.UploadResult;
 import com.classroom.manager.file.infra.exception.FileException;
+import com.classroom.manager.util.ErrorCode;
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
@@ -49,7 +50,7 @@ public class S3Uploader implements FileStorageService {
         try {
             fileUrl = s3Resource.getURL().toString();
         } catch (IOException e) {
-            throw new FileException("S3 리소스 URL 조회에 실패했습니다.", e);
+            throw new FileException(ErrorCode.NOT_FOUND_S3_URL.getMessage(), e);
         }
         return fileUrl;
     }
@@ -59,7 +60,7 @@ public class S3Uploader implements FileStorageService {
         try (InputStream inputStream = file.getInputStream()){
             s3Resource = s3Template.upload(bucketName, s3Key, inputStream, objectMetadata);
         } catch (IOException e) {
-            throw new FileException("S3 업로드 중 파일 스트림 오류가 발생했습니다.", e);
+            throw new FileException(ErrorCode.S3_FILE_UPLOAD_STREAM_ERROR.getMessage(), e);
         }
         return s3Resource;
     }
@@ -69,7 +70,7 @@ public class S3Uploader implements FileStorageService {
         try {
             s3Template.deleteObject(bucketName, fileKey);
         } catch (Exception e) {
-            throw new FileException("S3 파일 삭제 중 오류가 발생했습니다.", e);
+            throw new FileException(ErrorCode.S3_FILE_DELETE_ERROR.getMessage(), e);
         }
     }
 
