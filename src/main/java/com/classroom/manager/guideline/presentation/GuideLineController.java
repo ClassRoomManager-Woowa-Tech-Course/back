@@ -3,6 +3,7 @@ package com.classroom.manager.guideline.presentation;
 import com.classroom.manager.guideline.application.GuideLineService;
 import com.classroom.manager.guideline.application.dto.GuideLineRegisterRequest;
 import com.classroom.manager.guideline.presentation.dto.GuideLineResponse;
+import com.classroom.manager.user.infra.security.AdminAuthorizationValidator;
 import com.classroom.manager.user.infra.security.annotation.Auth;
 import com.classroom.manager.user.infra.security.dto.TokenPayLoad;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class GuideLineController {
 
     private final GuideLineService guideLineService;
+    private final AdminAuthorizationValidator adminAuthorizationValidator;
 
     @PostMapping
     public ResponseEntity<Void> registerGuideLine(
@@ -29,6 +31,7 @@ public class GuideLineController {
             @RequestPart("guideLine") GuideLineRegisterRequest guideLineRegisterRequest,
             @RequestPart(value = "file", required = false) List<MultipartFile> files
     ) {
+        adminAuthorizationValidator.checkIsAdminOrHigher(tokenPayLoad);
         String adminId = tokenPayLoad.adminId();
         guideLineService.register(adminId, guideLineRegisterRequest, files);
         return ResponseEntity.ok().build();
