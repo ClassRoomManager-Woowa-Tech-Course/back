@@ -4,7 +4,9 @@ import com.classroom.manager.user.application.exception.AdminAlreadyExistExcepti
 import com.classroom.manager.user.application.exception.AdminNotFoundException;
 import com.classroom.manager.user.domain.Admin;
 import com.classroom.manager.user.application.dto.AdminRegisterRequest;
+import com.classroom.manager.user.domain.Member;
 import com.classroom.manager.user.domain.repository.AdminRepository;
+import com.classroom.manager.user.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class AdminRegisterService {
 
     private final AdminRepository adminRepository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     public void register(AdminRegisterRequest adminRegisterRequest) {
@@ -24,6 +27,15 @@ public class AdminRegisterService {
         }
         Admin admin = Admin.from(adminRegisterRequest, passwordEncoder);
         adminRepository.save(admin);
+        if (!memberRepository.existsById(adminRegisterRequest.adminId())) {
+            memberRepository.save(
+                    Member.builder()
+                            .memberId(adminRegisterRequest.adminId())
+                            .role(adminRegisterRequest.role())
+                            .contact(adminRegisterRequest.contact())
+                            .name(adminRegisterRequest.name())
+                            .build());
+        }
     }
 
     public void delete(AdminRegisterRequest adminRegisterRequest) {
