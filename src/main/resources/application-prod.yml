@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: ${DATABASE_URL}  # Railway에서 제공
+    url: ${DATABASE_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update  # 프로덕션에서는 update!
-    show-sql: false  # 로그 성능을 위해 false
+      ddl-auto: update
+    show-sql: false
 
   cloud:
     aws:
