@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}  # Railway에서 제공
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # 프로덕션에서는 update!
+    show-sql: false  # 로그 성능을 위해 false
+
+  cloud:
+    aws:
+      s3:
+        bucket: ${AWS_S3_BUCKET}
+      region:
+        static: ${AWS_REGION}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+
+admin:
+  super:
+    id: ${ADMIN_ID}
+    password: ${ADMIN_PASSWORD}
+    name: ${ADMIN_NAME}
+    contact: ${ADMIN_CONTACT}
+
+jwt:
+  access-token-expiration-day: ${JWT_EXPIRATION_DAYS}
+  secret-key: ${JWT_SECRET_KEY}
+
+front:
+  url: ${FRONTEND_URL}
+
+logging:
+  level:
+    root: INFO
+    com.yourpackage: INFO
