@@ -5,9 +5,11 @@ import com.classroom.manager.user.application.exception.AdminNotFoundException;
 import com.classroom.manager.user.domain.Active;
 import com.classroom.manager.user.domain.Admin;
 import com.classroom.manager.user.domain.Authorization;
+import com.classroom.manager.user.domain.Member;
 import com.classroom.manager.user.domain.Role;
 import com.classroom.manager.user.application.dto.AdminRegisterRequest;
 import com.classroom.manager.user.domain.repository.AdminRepository;
+import com.classroom.manager.user.domain.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,9 @@ class AdminRegisterServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private MemberRepository memberRepository;
 
     @InjectMocks
     private AdminRegisterService adminRegisterService;
@@ -117,5 +122,16 @@ class AdminRegisterServiceTest {
 
         assertThatThrownBy(() -> adminRegisterService.suspend(adminRegisterRequest))
                 .isInstanceOf(AdminNotFoundException.class);
+    }
+
+    @DisplayName("관리자 등록을 하면 멤버 등록도 같이된다.")
+    @Test
+    void memberRegister() {
+        when(adminRepository.existsById(adminRegisterRequest.adminId())).thenReturn(false);
+        when(memberRepository.existsById(adminRegisterRequest.adminId())).thenReturn(false);
+
+        adminRegisterService.register(adminRegisterRequest);
+
+        verify(memberRepository).save(Mockito.any(Member.class));
     }
 }
