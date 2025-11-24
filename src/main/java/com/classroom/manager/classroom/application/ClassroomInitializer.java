@@ -17,7 +17,7 @@ public class ClassroomInitializer {
     @PostConstruct
     public void init(){
         classroomProperties.getCode().forEach(classCode -> {
-            if (!classroomRepository.existsByRoomCode((classCode))) {
+            if (!classroomRepository.existsByRoomCode(classCode)) {
                 classroomRepository.save(new Classroom(classCode));
             }
         });

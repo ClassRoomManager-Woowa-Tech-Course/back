@@ -1,6 +1,7 @@
 package com.classroom.manager.classroom.domain;
 
 import com.classroom.manager.classroom.presentation.dto.ClassroomResponse;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +16,7 @@ public class Classroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String roomCode;
 
     public Classroom(String classCode) {
